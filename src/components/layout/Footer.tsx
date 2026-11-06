@@ -1,4 +1,3 @@
-
 function Footer() {
   return (
     <footer className="border-t border-[#E5E1D8] bg-[#F7F5F0]">
