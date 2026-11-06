@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
+import { useCart } from '../context/CartContext'
+
 import { getProductById } from '../services/productService'
 import type { Product } from '../types/product'
 
 function ProductDetails() {
   const { id } = useParams()
+  const { addToCart } = useCart()
 
   const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
@@ -73,6 +76,18 @@ function ProductDetails() {
           <p className="mt-6 text-xs text-[#898674]">
             {product.stock} items available
           </p>
+          <button onClick={() => addToCart(product)}
+          className="mt-8 flex w-full items-center justify-between rounded-full
+          border border-[#D8D4C8] bg-[#EEECE4] px-7 py-4 text-[#252525] transition-all duration-300 hover:bg-[#E5E1D6]">
+          <span className="text-sm font-medium tracking-wide">
+              Add to cart
+          </span>
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#252525] 
+          text-lg text-white transition-transform duration-300 group-hover:rotate-45">
+            +
+            </span>
+          </button>
+
         </div>
       </div>
     </section>
