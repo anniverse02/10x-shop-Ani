@@ -1,8 +1,7 @@
-
 import { useCart } from '../context/CartContext'
 
 function Cart() {
-  const { items, updateQuantity } = useCart()
+  const { items, updateQuantity, removeFromCart } = useCart()
 
   return (
     <div className="min-h-screen bg-[#F7F5F0]">
@@ -42,7 +41,7 @@ function Cart() {
                       onClick={() =>
                         updateQuantity(item.product.id, item.quantity - 1)
                       }
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-[#D8D4C8] text-[#252525]"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-[#D8D4C8] text-[#252525] transition hover:bg-[#EAE7DE]"
                     >
                       -
                     </button>
@@ -55,11 +54,19 @@ function Cart() {
                       onClick={() =>
                         updateQuantity(item.product.id, item.quantity + 1)
                       }
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-[#D8D4C8] text-[#252525]"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-[#D8D4C8] text-[#252525] transition hover:bg-[#EAE7DE]"
                     >
                       +
                     </button>
                   </div>
+
+                  <button
+                    onClick={() => removeFromCart(item.product.id)}
+                    className="mt-4 flex items-center gap-2 rounded-lg bg-[#F0EAE4] px-3 py-2 text-xs text-[#A36F65] transition hover:bg-[#E8DDD6]"
+                  >
+                    <span>✕</span>
+                    <span>Remove item</span>
+                  </button>
                 </div>
               </div>
             ))}
@@ -71,4 +78,3 @@ function Cart() {
 }
 
 export default Cart
-
