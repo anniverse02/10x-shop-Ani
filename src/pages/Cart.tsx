@@ -1,7 +1,14 @@
+
 import { useCart } from '../context/CartContext'
 
 function Cart() {
   const { items, updateQuantity, removeFromCart } = useCart()
+
+  let totalPrice = 0
+
+  items.forEach((item) => {
+    totalPrice += item.product.price * item.quantity
+  })
 
   return (
     <div className="min-h-screen bg-[#F7F5F0]">
@@ -33,7 +40,11 @@ function Cart() {
                   </h2>
 
                   <p className="mt-2 text-sm text-[#898674]">
-                    ${item.product.price.toFixed(2)}
+                    Price: ${item.product.price.toFixed(2)}
+                  </p>
+
+                  <p className="mt-1 text-sm font-medium text-[#252525]">
+                    Subtotal: ${(item.product.price * item.quantity).toFixed(2)}
                   </p>
 
                   <div className="mt-3 flex items-center gap-4">
@@ -70,6 +81,18 @@ function Cart() {
                 </div>
               </div>
             ))}
+
+            <div className="flex justify-end border-t border-[#D8D4C8] pt-6">
+              <div className="text-right">
+                <p className="text-xs uppercase tracking-widest text-[#898674]">
+                  Total
+                </p>
+
+                <p className="mt-2 text-2xl font-semibold text-[#252525]">
+                  ${totalPrice.toFixed(2)}
+                </p>
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -78,3 +101,4 @@ function Cart() {
 }
 
 export default Cart
+
