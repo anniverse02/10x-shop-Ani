@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
+import { CartProvider } from './context/CartContext'
+
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 
@@ -12,6 +14,7 @@ import Checkout from './pages/Checkout'
 
 function App() {
   return (
+    <CartProvider>
     <BrowserRouter>
       <div className="flex min-h-screen flex-col">
         <Header />
@@ -30,6 +33,7 @@ function App() {
         <Footer />
       </div>
     </BrowserRouter>
+    </CartProvider>
   )
 }
 
