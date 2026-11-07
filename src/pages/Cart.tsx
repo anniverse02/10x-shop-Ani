@@ -1,4 +1,4 @@
-
+import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 
 function Cart() {
@@ -93,6 +93,16 @@ function Cart() {
                 </p>
               </div>
             </div>
+
+            <div className="flex justify-end">
+  <Link
+    to="/checkout"
+    className="flex items-center gap-8 rounded-full border border-[#CFCABC] px-7 py-4 text-sm text-[#252525] transition hover:bg-[#EEECE4]"
+  >
+    <span>Continue to checkout</span>
+    <span className="text-lg">→</span>
+  </Link>
+</div>
           </div>
         )}
       </div>
