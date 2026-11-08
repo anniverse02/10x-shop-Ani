@@ -12,6 +12,7 @@ import {
 import { CartProvider } from './context/CartContext'
 import { AuthProvider } from './context/AuthContext'
 
+import ErrorBoundary from './components/ErrorBoundary'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -36,7 +37,6 @@ function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
       <ScrollToTop />
-
       <Header />
 
       <main className="flex-1">
@@ -71,37 +71,39 @@ function NotFound() {
 
 function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Shop />} />
+    <ErrorBoundary>
+      <AuthProvider>
+        <CartProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Shop />} />
 
-              <Route
-                path="shop"
-                element={<Navigate to="/" replace />}
-              />
+                <Route
+                  path="shop"
+                  element={<Navigate to="/" replace />}
+                />
 
-              <Route path="login" element={<Login />} />
-              <Route path="products/:id" element={<ProductDetails />} />
-              <Route path="cart" element={<Cart />} />
+                <Route path="login" element={<Login />} />
+                <Route path="products/:id" element={<ProductDetails />} />
+                <Route path="cart" element={<Cart />} />
 
-              <Route
-                path="checkout"
-                element={
-                  <ProtectedRoute>
-                    <Checkout />
-                  </ProtectedRoute>
-                }
-              />
+                <Route
+                  path="checkout"
+                  element={
+                    <ProtectedRoute>
+                      <Checkout />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route path="*" element={<NotFound />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </CartProvider>
-    </AuthProvider>
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   )
 }
 
