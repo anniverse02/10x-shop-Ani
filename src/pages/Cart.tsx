@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 
@@ -11,7 +12,7 @@ function Cart() {
   )
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0]">
+    <div className="min-h-screen w-full bg-[#F7F5F0]">
       <div className="mx-auto max-w-7xl px-6 py-16">
         <h1 className="text-3xl font-semibold tracking-tight text-[#252525]">
           Shopping Cart
@@ -43,7 +44,7 @@ function Cart() {
                   className="h-24 w-24 bg-white object-contain p-2"
                 />
 
-                <div className="flex-1">
+                <div className="min-w-0 flex-1">
                   <h2 className="text-sm font-medium text-[#252525]">
                     {item.product.title}
                   </h2>
@@ -67,12 +68,16 @@ function Cart() {
                         )
                       }
                       disabled={item.quantity <= 1}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-[#D8D4C8] text-[#252525] transition hover:bg-[#EAE7DE] disabled:cursor-not-allowed disabled:opacity-40"
+                      aria-label={`Decrease quantity of ${item.product.title}`}
+                      className="flex h-11 w-11 items-center justify-center rounded-full border border-[#D8D4C8] text-[#252525] transition hover:bg-[#EAE7DE] disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       -
                     </button>
 
-                    <span className="text-sm text-[#252525]">
+                    <span
+                      className="text-sm text-[#252525]"
+                      aria-live="polite"
+                    >
                       {item.quantity}
                     </span>
 
@@ -84,8 +89,11 @@ function Cart() {
                           item.quantity + 1,
                         )
                       }
-                      disabled={item.quantity >= item.product.stock}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-[#D8D4C8] text-[#252525] transition hover:bg-[#EAE7DE] disabled:cursor-not-allowed disabled:opacity-40"
+                      disabled={
+                        item.quantity >= item.product.stock
+                      }
+                      aria-label={`Increase quantity of ${item.product.title}`}
+                      className="flex h-11 w-11 items-center justify-center rounded-full border border-[#D8D4C8] text-[#252525] transition hover:bg-[#EAE7DE] disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       +
                     </button>
@@ -94,6 +102,7 @@ function Cart() {
                   <button
                     type="button"
                     onClick={() => removeFromCart(item.product.id)}
+                    aria-label={`Remove ${item.product.title} from cart`}
                     className="mt-4 flex items-center gap-2 rounded-lg bg-[#F0EAE4] px-3 py-2 text-xs text-[#A36F65] transition hover:bg-[#E8DDD6]"
                   >
                     <span>✕</span>
