@@ -10,9 +10,11 @@ import {
 } from 'react-router-dom'
 
 import { CartProvider } from './context/CartContext'
+import { AuthProvider } from './context/AuthContext'
 
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
+import ProtectedRoute from './components/ProtectedRoute'
 
 import Shop from './pages/Shop'
 import Login from './pages/Login'
@@ -20,7 +22,6 @@ import ProductDetails from './pages/ProductDetails'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 
-// Scroll to top when the page changes
 function ScrollToTop() {
   const { pathname } = useLocation()
 
@@ -31,7 +32,6 @@ function ScrollToTop() {
   return null
 }
 
-// Shared layout for all pages
 function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
@@ -48,7 +48,6 @@ function Layout() {
   )
 }
 
-// 404 page
 function NotFound() {
   return (
     <section className="mx-auto flex min-h-[60vh] max-w-7xl flex-col items-center justify-center px-6 text-center">
@@ -72,28 +71,37 @@ function NotFound() {
 
 function App() {
   return (
-    <CartProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            {/* Catalog */}
-            <Route index element={<Shop />} />
+    <AuthProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Shop />} />
 
-            {/* Redirect old shop URL to catalog */}
-            <Route path="shop" element={<Navigate to="/" replace />} />
+              <Route
+                path="shop"
+                element={<Navigate to="/" replace />}
+              />
 
-            {/* Other pages */}
-            <Route path="login" element={<Login />} />
-            <Route path="products/:id" element={<ProductDetails />} />
-            <Route path="cart" element={<Cart />} />
-            <Route path="checkout" element={<Checkout />} />
+              <Route path="login" element={<Login />} />
+              <Route path="products/:id" element={<ProductDetails />} />
+              <Route path="cart" element={<Cart />} />
 
-            {/* 404 */}
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </CartProvider>
+              <Route
+                path="checkout"
+                element={
+                  <ProtectedRoute>
+                    <Checkout />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </CartProvider>
+    </AuthProvider>
   )
 }
 

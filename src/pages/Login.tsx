@@ -1,62 +1,53 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 function Login() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const { login } = useAuth()
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [usernameError, setUsernameError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
 
-  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
+  const handleLogin = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    setError('')
-    setIsLoading(true)
+    setUsernameError('')
+    setPasswordError('')
 
-    try {
-      const response = await fetch('https://dummyjson.com/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: username.trim(),
-          password: password,
-          expiresInMins: 30,
-        }),
-      })
+    const trimmedUsername = username.trim()
 
-      const data = await response.json()
+    let hasError = false
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Invalid username or password.')
-      }
+    if (!trimmedUsername) {
+      setUsernameError('Username is required')
+      hasError = true
+    }
 
-      localStorage.setItem('accessToken', data.accessToken)
+    if (!password) {
+      setPasswordError('Password is required')
+      hasError = true
+    } else if (password.length < 6) {
+      setPasswordError('Password must be at least 6 characters')
+      hasError = true
+    }
 
-      localStorage.setItem(
-        'user',
-        JSON.stringify({
-          id: data.id,
-          username: data.username,
-          email: data.email,
-          firstName: data.firstName,
-          lastName: data.lastName,
-        }),
-      )
+    if (hasError) {
+      return
+    }
 
-      navigate('/shop')
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message)
-      } else {
-        setError('Something went wrong. Please try again.')
-      }
-    } finally {
-      setIsLoading(false)
+    login(trimmedUsername)
+
+    const from = location.state?.from?.pathname
+
+    if (from === '/checkout') {
+      navigate('/checkout', { replace: true })
+    } else {
+      navigate('/', { replace: true })
     }
   }
 
@@ -104,9 +95,14 @@ function Login() {
                 onChange={(event) => setUsername(event.target.value)}
                 placeholder="Enter your username"
                 autoComplete="username"
-                required
                 className="w-full border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525]"
               />
+
+              {usernameError && (
+                <p className="mt-2 text-sm text-[#A36F65]">
+                  {usernameError}
+                </p>
+              )}
             </div>
 
             <div>
@@ -124,25 +120,21 @@ function Login() {
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder="Enter your password"
                 autoComplete="current-password"
-                required
                 className="w-full border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525]"
               />
-            </div>
 
-            {error && (
-              <p className="text-sm text-[#A36F65]">
-                {error}
-              </p>
-            )}
+              {passwordError && (
+                <p className="mt-2 text-sm text-[#A36F65]">
+                  {passwordError}
+                </p>
+              )}
+            </div>
 
             <button
               type="submit"
-              disabled={isLoading}
-              className="flex w-full items-center justify-between rounded-full border border-[#D8D4C8] bg-[#EEECE4] px-7 py-3 text-sm font-medium text-[#252525] transition hover:bg-[#E5E1D6] disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex w-full items-center justify-between rounded-full border border-[#D8D4C8] bg-[#EEECE4] px-7 py-3 text-sm font-medium text-[#252525] transition hover:bg-[#E5E1D6] focus:outline-none focus:ring-2 focus:ring-[#898674]"
             >
-              <span>
-                {isLoading ? 'Signing in...' : 'Sign in'}
-              </span>
+              <span>Sign in</span>
 
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#252525] text-lg text-white">
                 →
