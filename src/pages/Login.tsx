@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 function Login() {
@@ -141,6 +141,13 @@ function Login() {
               </span>
             </button>
           </form>
+
+          <Link
+            to="/"
+            className="mt-6 inline-block text-sm text-[#898674] transition hover:text-[#252525]"
+          >
+            ← Back to catalog
+          </Link>
         </div>
       </div>
     </section>
