@@ -1,9 +1,11 @@
+
 import { useEffect, useState } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import { useCart } from '../context/CartContext'
 import { getProductById } from '../services/productService'
 import type { Product } from '../types/product'
+import NotFound from '../components/NotFound'
 
 function ProductDetails() {
   const { id } = useParams()
@@ -61,7 +63,7 @@ function ProductDetails() {
   }
 
   if (notFound) {
-    return <Navigate to="/not-found" replace />
+    return <NotFound />
   }
 
   if (loading) {
@@ -76,6 +78,7 @@ function ProductDetails() {
     return (
       <div className="bg-[#F7F5F0] py-24 text-center">
         <p className="text-red-600">{error}</p>
+
         <Link
           to="/"
           className="mt-4 inline-block text-sm text-[#252525] underline"
@@ -87,7 +90,7 @@ function ProductDetails() {
   }
 
   if (!product) {
-    return <Navigate to="/not-found" replace />
+    return <NotFound />
   }
 
   return (
@@ -141,7 +144,10 @@ function ProductDetails() {
             <button
               type="button"
               onClick={handleAddToCart}
-              disabled={product.stock === 0 || cartQuantity >= product.stock}
+              disabled={
+                product.stock === 0 ||
+                cartQuantity >= product.stock
+              }
               className="mt-8 flex w-full items-center justify-between rounded-full border border-[#D8D4C8] bg-[#EEECE4] px-7 py-4 text-[#252525] transition-all duration-300 hover:bg-[#E5E1D6] disabled:cursor-not-allowed disabled:opacity-50"
             >
               <span className="text-sm font-medium tracking-wide">
