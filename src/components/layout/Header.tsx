@@ -1,7 +1,22 @@
-
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+import { useCart } from '../../context/CartContext'
 
 function Header() {
+  const { isLoggedIn, logout } = useAuth()
+  const { items } = useCart()
+  const navigate = useNavigate()
+
+  const cartCount = items.reduce(
+    (total, item) => total + item.quantity,
+    0,
+  )
+
+  const handleLogout = (): void => {
+    logout()
+    navigate('/')
+  }
+
   return (
     <header className="border-b border-[#E5E1D8] bg-[#F7F5F0]">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
@@ -14,7 +29,7 @@ function Header() {
         </div>
 
         {/* Main navigation */}
-        <div className="flex min-h-20 items-center justify-between gap-4">
+        <div className="flex min-h-20 flex-wrap items-center justify-between gap-4 py-4">
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-1">
@@ -27,7 +42,7 @@ function Header() {
           </Link>
 
           {/* Navigation */}
-          <nav className="hidden items-center gap-9 md:flex">
+          <nav className="order-3 flex w-full items-center gap-7 md:order-none md:w-auto md:gap-9">
             <NavLink
               to="/"
               end
@@ -39,40 +54,45 @@ function Header() {
                 }`
               }
             >
-              Home
-            </NavLink>
-
-            <NavLink
-              to="/shop"
-              className={({ isActive }) =>
-                `text-xs uppercase tracking-[0.13em] transition ${
-                  isActive
-                    ? 'font-semibold text-[#252525]'
-                    : 'text-[#898674] hover:text-[#252525]'
-                }`
-              }
-            >
-              Collection
+              Catalog
             </NavLink>
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-5">
-            <Link
-              to="/login"
-              className="hidden text-xs uppercase tracking-[0.13em] text-[#898674] transition hover:text-[#252525] sm:block"
-            >
-              Account
-            </Link>
+          <div className="flex items-center gap-4 sm:gap-5">
+
+            {isLoggedIn ? (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="text-xs uppercase tracking-[0.13em] text-[#898674] transition hover:text-[#252525]"
+              >
+                Log out
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="text-xs uppercase tracking-[0.13em] text-[#898674] transition hover:text-[#252525]"
+              >
+                Log in
+              </Link>
+            )}
 
             <Link
               to="/cart"
               className="flex items-center gap-2 border border-[#252525] px-4 py-3 text-xs font-medium uppercase tracking-wider transition hover:bg-[#252525] hover:text-white"
             >
-              Cart <span>↗</span>
+              Cart
+
+              {cartCount > 0 && (
+                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#252525] px-1 text-[10px] text-white">
+                  {cartCount}
+                </span>
+              )}
+
+              <span>↗</span>
             </Link>
           </div>
-
         </div>
       </div>
     </header>
