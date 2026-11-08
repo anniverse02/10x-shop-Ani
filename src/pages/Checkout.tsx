@@ -8,21 +8,65 @@ function Checkout() {
 
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
   const [address, setAddress] = useState('')
+  const [city, setCity] = useState('')
+
+  const [fullNameError, setFullNameError] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [addressError, setAddressError] = useState('')
+  const [cityError, setCityError] = useState('')
+
   const [orderPlaced, setOrderPlaced] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [orderTotal, setOrderTotal] = useState(0)
 
-  let totalPrice = 0
+  const totalPrice = items.reduce(
+    (total, item) => total + item.product.price * item.quantity,
+    0,
+  )
 
-  items.forEach((item) => {
-    totalPrice += item.product.price * item.quantity
-  })
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    clearCart()
-    setOrderPlaced(true)
+    if (isSubmitting) return
+
+    setFullNameError('')
+    setEmailError('')
+    setAddressError('')
+    setCityError('')
+
+    let hasError = false
+
+    if (fullName.trim().length < 3) {
+      setFullNameError('Full name must be at least 3 characters')
+      hasError = true
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setEmailError('Please enter a valid email address')
+      hasError = true
+    }
+
+    if (address.trim().length < 5) {
+      setAddressError('Address must be at least 5 characters')
+      hasError = true
+    }
+
+    if (!city.trim()) {
+      setCityError('City is required')
+      hasError = true
+    }
+
+    if (hasError) return
+
+    setOrderTotal(totalPrice)
+    setIsSubmitting(true)
+
+    window.setTimeout(() => {
+      clearCart()
+      setOrderPlaced(true)
+      setIsSubmitting(false)
+    }, 500)
   }
 
   if (orderPlaced) {
@@ -45,7 +89,7 @@ function Checkout() {
             </div>
 
             <h1 className="mt-8 max-w-2xl text-5xl font-medium leading-tight tracking-tight text-[#252525]">
-              Thank you for choosing 10X Shop.
+              Thank you! Your order has been placed.
             </h1>
 
             <p className="mt-6 max-w-md text-sm leading-7 text-[#898674]">
@@ -53,30 +97,18 @@ function Checkout() {
               We appreciate your purchase and hope you enjoy your new items.
             </p>
 
-            <div className="mt-16 grid gap-8 border-t border-[#D8D4C8] py-8 sm:grid-cols-2">
-              <div>
-                <p className="text-xs uppercase tracking-widest text-[#898674]">
-                  Order status
-                </p>
+            <div className="mt-16 border-t border-[#D8D4C8] py-8">
+              <p className="text-xs uppercase tracking-widest text-[#898674]">
+                Order total
+              </p>
 
-                <p className="mt-3 text-sm font-medium text-[#252525]">
-                  Successfully submitted
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs uppercase tracking-widest text-[#898674]">
-                  Thank you
-                </p>
-
-                <p className="mt-3 text-sm font-medium text-[#252525]">
-                  For shopping with us.
-                </p>
-              </div>
+              <p className="mt-3 text-2xl font-medium text-[#252525]">
+                ${orderTotal.toFixed(2)}
+              </p>
             </div>
 
             <Link
-              to="/shop"
+              to="/"
               className="inline-flex items-center gap-8 rounded-full border border-[#CFCABC] px-7 py-4 text-sm text-[#252525] transition hover:bg-[#EEECE4]"
             >
               <span>Continue shopping</span>
@@ -105,7 +137,7 @@ function Checkout() {
           </p>
 
           <Link
-            to="/shop"
+            to="/"
             className="mt-8 inline-block text-sm text-[#252525] underline underline-offset-4"
           >
             Back to shop →
@@ -139,75 +171,118 @@ function Checkout() {
             </h2>
 
             <p className="mt-2 text-sm text-[#898674]">
-              Please provide your contact and delivery details.
+              Please provide your delivery details.
             </p>
 
-            <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+            <form
+              onSubmit={handleSubmit}
+              noValidate
+              className="mt-8 space-y-6"
+            >
               <div>
-                <label className="mb-2 block text-sm text-[#252525]">
+                <label
+                  htmlFor="fullName"
+                  className="mb-2 block text-sm text-[#252525]"
+                >
                   Full name
                 </label>
 
                 <input
+                  id="fullName"
                   type="text"
                   value={fullName}
                   onChange={(event) => setFullName(event.target.value)}
-                  required
                   placeholder="Your full name"
                   className="w-full border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525]"
                 />
+
+                {fullNameError && (
+                  <p className="mt-2 text-sm text-[#A36F65]" role="alert">
+                    {fullNameError}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-[#252525]">
+                <label
+                  htmlFor="email"
+                  className="mb-2 block text-sm text-[#252525]"
+                >
                   Email address
                 </label>
 
                 <input
+                  id="email"
                   type="email"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
-                  required
                   placeholder="Your email address"
                   className="w-full border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525]"
                 />
+
+                {emailError && (
+                  <p className="mt-2 text-sm text-[#A36F65]" role="alert">
+                    {emailError}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-[#252525]">
-                  Phone number
-                </label>
-
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(event) => setPhone(event.target.value)}
-                  required
-                  placeholder="Your phone number"
-                  className="w-full border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525]"
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm text-[#252525]">
+                <label
+                  htmlFor="address"
+                  className="mb-2 block text-sm text-[#252525]"
+                >
                   Delivery address
                 </label>
 
                 <textarea
+                  id="address"
                   value={address}
                   onChange={(event) => setAddress(event.target.value)}
-                  required
-                  placeholder="Street, city, apartment..."
+                  placeholder="Street, apartment..."
                   rows={3}
                   className="w-full resize-none border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525]"
                 />
+
+                {addressError && (
+                  <p className="mt-2 text-sm text-[#A36F65]" role="alert">
+                    {addressError}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="city"
+                  className="mb-2 block text-sm text-[#252525]"
+                >
+                  City
+                </label>
+
+                <input
+                  id="city"
+                  type="text"
+                  value={city}
+                  onChange={(event) => setCity(event.target.value)}
+                  placeholder="Your city"
+                  className="w-full border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525]"
+                />
+
+                {cityError && (
+                  <p className="mt-2 text-sm text-[#A36F65]" role="alert">
+                    {cityError}
+                  </p>
+                )}
               </div>
 
               <button
                 type="submit"
-                className="mt-6 flex w-full items-center justify-between rounded-full border border-[#D8D4C8] bg-[#EEECE4] px-7 py-3 text-sm font-medium text-[#252525] transition hover:bg-[#E5E1D6]"
+                disabled={isSubmitting}
+                className="mt-6 flex w-full items-center justify-between rounded-full border border-[#D8D4C8] bg-[#EEECE4] px-7 py-3 text-sm font-medium text-[#252525] transition hover:bg-[#E5E1D6] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                <span>Place order</span>
+                <span>
+                  {isSubmitting ? 'Placing order...' : 'Place order'}
+                </span>
 
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#252525] text-lg text-white">
                   +
