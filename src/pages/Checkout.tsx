@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link } from 'react-router-dom'
@@ -88,7 +89,7 @@ function Checkout() {
               </p>
             </div>
 
-            <h1 className="mt-8 max-w-2xl text-5xl font-medium leading-tight tracking-tight text-[#252525]">
+            <h1 className="mt-8 max-w-2xl text-3xl font-medium leading-tight tracking-tight text-[#252525] sm:text-5xl">
               Thank you! Your order has been placed.
             </h1>
 
@@ -109,7 +110,7 @@ function Checkout() {
 
             <Link
               to="/"
-              className="inline-flex items-center gap-8 rounded-full border border-[#CFCABC] px-7 py-4 text-sm text-[#252525] transition hover:bg-[#EEECE4]"
+              className="inline-flex items-center gap-8 rounded-full border border-[#CFCABC] px-7 py-4 text-sm text-[#252525] transition hover:bg-[#EEECE4] focus:outline-none focus:ring-2 focus:ring-[#898674]"
             >
               <span>Continue shopping</span>
               <span className="text-lg">→</span>
@@ -138,7 +139,7 @@ function Checkout() {
 
           <Link
             to="/"
-            className="mt-8 inline-block text-sm text-[#252525] underline underline-offset-4"
+            className="mt-8 inline-block text-sm text-[#252525] underline underline-offset-4 focus:outline-none focus:ring-2 focus:ring-[#898674]"
           >
             Back to shop →
           </Link>
@@ -190,14 +191,22 @@ function Checkout() {
                 <input
                   id="fullName"
                   type="text"
+                  required
+                  autoComplete="name"
+                  aria-invalid={Boolean(fullNameError)}
+                  aria-describedby={fullNameError ? 'fullName-error' : undefined}
                   value={fullName}
                   onChange={(event) => setFullName(event.target.value)}
                   placeholder="Your full name"
-                  className="w-full border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525]"
+                  className="w-full border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525] focus:ring-1 focus:ring-[#898674]"
                 />
 
                 {fullNameError && (
-                  <p className="mt-2 text-sm text-[#A36F65]" role="alert">
+                  <p
+                    id="fullName-error"
+                    className="mt-2 text-sm text-[#A36F65]"
+                    role="alert"
+                  >
                     {fullNameError}
                   </p>
                 )}
@@ -214,14 +223,22 @@ function Checkout() {
                 <input
                   id="email"
                   type="email"
+                  required
+                  autoComplete="email"
+                  aria-invalid={Boolean(emailError)}
+                  aria-describedby={emailError ? 'email-error' : undefined}
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   placeholder="Your email address"
-                  className="w-full border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525]"
+                  className="w-full border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525] focus:ring-1 focus:ring-[#898674]"
                 />
 
                 {emailError && (
-                  <p className="mt-2 text-sm text-[#A36F65]" role="alert">
+                  <p
+                    id="email-error"
+                    className="mt-2 text-sm text-[#A36F65]"
+                    role="alert"
+                  >
                     {emailError}
                   </p>
                 )}
@@ -237,15 +254,23 @@ function Checkout() {
 
                 <textarea
                   id="address"
+                  required
+                  autoComplete="street-address"
+                  aria-invalid={Boolean(addressError)}
+                  aria-describedby={addressError ? 'address-error' : undefined}
                   value={address}
                   onChange={(event) => setAddress(event.target.value)}
                   placeholder="Street, apartment..."
                   rows={3}
-                  className="w-full resize-none border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525]"
+                  className="w-full resize-none border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525] focus:ring-1 focus:ring-[#898674]"
                 />
 
                 {addressError && (
-                  <p className="mt-2 text-sm text-[#A36F65]" role="alert">
+                  <p
+                    id="address-error"
+                    className="mt-2 text-sm text-[#A36F65]"
+                    role="alert"
+                  >
                     {addressError}
                   </p>
                 )}
@@ -262,14 +287,22 @@ function Checkout() {
                 <input
                   id="city"
                   type="text"
+                  required
+                  autoComplete="address-level2"
+                  aria-invalid={Boolean(cityError)}
+                  aria-describedby={cityError ? 'city-error' : undefined}
                   value={city}
                   onChange={(event) => setCity(event.target.value)}
                   placeholder="Your city"
-                  className="w-full border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525]"
+                  className="w-full border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525] focus:ring-1 focus:ring-[#898674]"
                 />
 
                 {cityError && (
-                  <p className="mt-2 text-sm text-[#A36F65]" role="alert">
+                  <p
+                    id="city-error"
+                    className="mt-2 text-sm text-[#A36F65]"
+                    role="alert"
+                  >
                     {cityError}
                   </p>
                 )}
@@ -278,7 +311,7 @@ function Checkout() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-6 flex w-full items-center justify-between rounded-full border border-[#D8D4C8] bg-[#EEECE4] px-7 py-3 text-sm font-medium text-[#252525] transition hover:bg-[#E5E1D6] disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-6 flex w-full items-center justify-between rounded-full border border-[#D8D4C8] bg-[#EEECE4] px-7 py-3 text-sm font-medium text-[#252525] transition hover:bg-[#E5E1D6] focus:outline-none focus:ring-2 focus:ring-[#898674] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <span>
                   {isSubmitting ? 'Placing order...' : 'Place order'}
@@ -309,11 +342,11 @@ function Checkout() {
                   <img
                     src={item.product.thumbnail}
                     alt={item.product.title}
-                    className="h-20 w-20 bg-white object-contain p-2"
+                    className="h-20 w-20 shrink-0 bg-white object-contain p-2"
                   />
 
-                  <div className="flex-1">
-                    <h3 className="text-sm font-medium text-[#252525]">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="break-words text-sm font-medium text-[#252525]">
                       {item.product.title}
                     </h3>
 
@@ -322,7 +355,7 @@ function Checkout() {
                     </p>
                   </div>
 
-                  <p className="text-sm text-[#252525]">
+                  <p className="shrink-0 text-sm text-[#252525]">
                     ${(item.product.price * item.quantity).toFixed(2)}
                   </p>
                 </div>
@@ -345,7 +378,7 @@ function Checkout() {
 
             <Link
               to="/cart"
-              className="mt-8 inline-block text-xs text-[#898674] underline underline-offset-4 transition hover:text-[#252525]"
+              className="mt-8 inline-block text-xs text-[#898674] underline underline-offset-4 transition hover:text-[#252525] focus:outline-none focus:ring-2 focus:ring-[#898674]"
             >
               Back to shopping cart
             </Link>
