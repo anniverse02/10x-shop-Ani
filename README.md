@@ -87,7 +87,7 @@ Product data is provided by [DummyJSON](https://dummyjson.com/).
 
 ## Live Demo
 
-Coming soon.
+https://10x-shop-ani.vercel.app/
 
 ## Test Account
 
