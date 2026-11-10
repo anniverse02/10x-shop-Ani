@@ -1,75 +1,100 @@
-# React + TypeScript + Vite
+# 10X Shop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern shopping experience built with React and TypeScript.
 
-Currently, two official plugins are available:
+## About the Project
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+10X Shop is an e-commerce application created as part of my React and TypeScript learning journey. The goal was to build a functional online store with a clean design and a simple shopping experience.
 
-## React Compiler
+Users can explore products, view product details, manage their shopping cart, and complete the checkout process.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+**Shopping**
+- Browse the product catalog
+- View individual product details
+- Add products to the cart
+- Update quantities and remove items
+- Calculate the total price
+- Save cart data using localStorage
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**User Access**
+- Login and logout
+- Protected checkout page
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**Checkout**
+- Fill in checkout form details
+- Submit an order
+- View order confirmation
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+**Other**
+- Responsive design for different screen sizes
+- Product data fetched from DummyJSON API
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Technologies Used
 
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router
+- React Context API
+- localStorage
+- DummyJSON API
+
+## Project Structure
+
+- `public` – static files
+- `src/assets` – images and other assets
+- `src/components` – reusable UI components
+- `src/components/layout` – Header and Footer components
+- `src/context` – cart and authentication state management
+- `src/pages` – application pages, including Home, Shop, Product Details, Cart, Login, and Checkout
+- `src/services` – product API requests
+- `src/types` – TypeScript types and interfaces
+- `src/App.tsx` – main application component and routing
+- `src/main.tsx` – application entry point
+- `src/index.css` and `src/App.css` – global and application styles
+## Getting Started
+
+Clone the repository and install the dependencies:
+
+```bash
+git clone https://github.com/anniverse02/10x-shop-Ani.git
+cd 10x-shop
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Start the development server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run dev
 ```
+
+## Available Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start development server |
+| `npm run build` | Build the application |
+| `npm run preview` | Preview the production build |
+| `npm run typecheck` | Check TypeScript errors |
+| `npm run lint` | Run ESLint |
+
+## Data Source
+
+Product data is provided by [DummyJSON](https://dummyjson.com/).
+
+## Live Demo
+
+Coming soon.
+
+## Test Account
+
+Username: `Annie`
+
+Password: `pass1234`
+
+## Author
+
+Developed by Annie.
