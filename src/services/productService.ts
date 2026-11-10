@@ -3,7 +3,7 @@ import type { Product, ProductsResponse } from '../types/product'
 const API_URL = 'https://dummyjson.com/products'
 
 export async function getProducts(): Promise<Product[]> {
-  const response = await fetch(`${API_URL}?limit=0`)
+  const response = await fetch(`${API_URL}?limit=12&skip=0`)
 
   if (!response.ok) {
     throw new Error('Failed to fetch products')
@@ -28,6 +28,10 @@ export async function getCategories(): Promise<string[]> {
 
 export async function getProductById(id: number): Promise<Product> {
   const response = await fetch(`${API_URL}/${id}`)
+
+  if (response.status === 404) {
+    throw new Error('Product not found')
+  }
 
   if (!response.ok) {
     throw new Error('Failed to fetch product')

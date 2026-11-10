@@ -23,7 +23,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const savedItems = localStorage.getItem('cart')
 
     if (savedItems) {
-      return JSON.parse(savedItems) as CartItem[]
+      try {
+        return JSON.parse(savedItems) as CartItem[]
+      } catch {
+        return []
+      }
     }
 
     return []
@@ -33,39 +37,50 @@ export function CartProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('cart', JSON.stringify(items))
   }, [items])
 
-  const addToCart = (product: Product) => {
-    const existingItem = items.find(
-      (item) => item.product.id === product.id,
-    )
+  const addToCart = (product: Product): void => {
+    if (product.stock <= 0) return
 
-    if (existingItem) {
-      setItems(
-        items.map((item) =>
+    setItems((currentItems) => {
+      const existingItem = currentItems.find(
+        (item) => item.product.id === product.id,
+      )
+
+      if (existingItem) {
+        if (existingItem.quantity >= product.stock) {
+          return currentItems
+        }
+
+        return currentItems.map((item) =>
           item.product.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item,
-        ),
-      )
-    } else {
-      setItems([...items, { product, quantity: 1 }])
-    }
+        )
+      }
+
+      return [...currentItems, { product, quantity: 1 }]
+    })
   }
 
-  const removeFromCart = (id: number) => {
-    setItems(items.filter((item) => item.product.id !== id))
-  }
-
-  const updateQuantity = (id: number, quantity: number) => {
-    if (quantity < 1) return
-
-    setItems(
-      items.map((item) =>
-        item.product.id === id ? { ...item, quantity } : item,
-      ),
+  const removeFromCart = (id: number): void => {
+    setItems((currentItems) =>
+      currentItems.filter((item) => item.product.id !== id),
     )
   }
 
-  const clearCart = () => {
+  const updateQuantity = (id: number, quantity: number): void => {
+    if (!Number.isInteger(quantity) || quantity < 1) return
+
+    setItems((currentItems) =>
+      currentItems.map((item) => {
+        if (item.product.id !== id) return item
+        if (quantity > item.product.stock) return item
+
+        return { ...item, quantity }
+      }),
+    )
+  }
+
+  const clearCart = (): void => {
     setItems([])
   }
 
@@ -78,6 +93,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useCart() {
   const context = useContext(CartContext)
 
