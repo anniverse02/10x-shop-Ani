@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useState } from 'react'
 import type { ReactNode } from 'react'
 
@@ -42,6 +43,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth(): AuthContextType {
   const context = useContext(AuthContext)
 

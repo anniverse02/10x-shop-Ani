@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
 import type { Product } from '../types/product'
@@ -92,6 +93,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useCart() {
   const context = useContext(CartContext)
 
