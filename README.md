@@ -86,8 +86,7 @@ npm run dev
 Product data is provided by [DummyJSON](https://dummyjson.com/).
 
 ## Live Demo
-
-https://10x-shop-ani.vercel.app/
+https://10x-shop-ani-tmkj.vercel.app/
 
 ## Test Account
 
