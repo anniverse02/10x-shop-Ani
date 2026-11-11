@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react'
 import {
   BrowserRouter,
@@ -10,6 +11,7 @@ import {
 
 import { CartProvider } from './context/CartContext'
 import { AuthProvider } from './context/AuthContext'
+import { ThemeProvider } from './context/ThemeContext'
 
 import ErrorBoundary from './components/ErrorBoundary'
 import NotFound from './components/NotFound'
@@ -51,37 +53,39 @@ function Layout() {
 function App() {
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Shop />} />
+      <ThemeProvider>
+        <AuthProvider>
+          <CartProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<Shop />} />
 
-                <Route
-                  path="shop"
-                  element={<Navigate to="/" replace />}
-                />
+                  <Route
+                    path="shop"
+                    element={<Navigate to="/" replace />}
+                  />
 
-                <Route path="login" element={<Login />} />
-                <Route path="products/:id" element={<ProductDetails />} />
-                <Route path="cart" element={<Cart />} />
+                  <Route path="login" element={<Login />} />
+                  <Route path="products/:id" element={<ProductDetails />} />
+                  <Route path="cart" element={<Cart />} />
 
-                <Route
-                  path="checkout"
-                  element={
-                    <ProtectedRoute>
-                      <Checkout />
-                    </ProtectedRoute>
-                  }
-                />
+                  <Route
+                    path="checkout"
+                    element={
+                      <ProtectedRoute>
+                        <Checkout />
+                      </ProtectedRoute>
+                    }
+                  />
 
-                <Route path="*" element={<NotFound />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </CartProvider>
-      </AuthProvider>
+                  <Route path="*" element={<NotFound />} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+          </CartProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   )
 }

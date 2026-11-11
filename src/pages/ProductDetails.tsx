@@ -77,7 +77,7 @@ function ProductDetails() {
 
   if (loading) {
     return (
-      <p className="bg-[#F7F5F0] py-24 text-center text-[#898674]">
+      <p className="theme-page theme-muted py-24 text-center">
         Loading product...
       </p>
     )
@@ -85,12 +85,12 @@ function ProductDetails() {
 
   if (error) {
     return (
-      <div className="bg-[#F7F5F0] py-24 text-center">
+      <div className="theme-page py-24 text-center">
         <p className="text-red-600">{error}</p>
 
         <Link
           to="/"
-          className="mt-4 inline-block text-sm text-[#252525] underline"
+          className="theme-text mt-4 inline-block text-sm underline"
         >
           Back to catalog
         </Link>
@@ -103,17 +103,17 @@ function ProductDetails() {
   }
 
   return (
-    <section className="min-h-screen bg-[#F7F5F0]">
+    <section className="theme-page min-h-screen">
       <div className="mx-auto max-w-7xl px-6 py-16">
         <Link
           to="/"
-          className="mb-8 inline-block text-sm text-[#898674] transition hover:text-[#252525]"
+          className="theme-muted mb-8 inline-block text-sm transition hover:opacity-70"
         >
           ← Back to catalog
         </Link>
 
         <div className="grid gap-12 md:grid-cols-2">
-          <div className="flex items-center justify-center bg-white p-10">
+          <div className="theme-surface flex items-center justify-center p-10">
             <img
               id="product-image"
               src={product.thumbnail}
@@ -123,27 +123,27 @@ function ProductDetails() {
           </div>
 
           <div className="flex flex-col justify-center">
-            <p className="text-xs uppercase tracking-widest text-[#898674]">
+            <p className="theme-muted text-xs uppercase tracking-widest">
               {product.category}
             </p>
 
-            <h1 className="mt-4 text-4xl font-semibold text-[#252525]">
+            <h1 className="theme-text mt-4 text-4xl font-semibold">
               {product.title}
             </h1>
 
-            <p className="mt-4 text-sm text-[#898674]">
+            <p className="theme-muted mt-4 text-sm">
               ★ {product.rating} / 5
             </p>
 
-            <p className="mt-6 text-2xl font-semibold text-[#252525]">
+            <p className="theme-text mt-6 text-2xl font-semibold">
               ${product.price.toFixed(2)}
             </p>
 
-            <p className="mt-6 text-sm leading-7 text-[#898674]">
+            <p className="theme-muted mt-6 text-sm leading-7">
               {product.description}
             </p>
 
-            <p className="mt-6 text-xs text-[#898674]">
+            <p className="theme-muted mt-6 text-xs">
               {product.stock > 5
                 ? 'In stock'
                 : product.stock > 0
@@ -158,7 +158,7 @@ function ProductDetails() {
                 product.stock === 0 ||
                 cartQuantity >= product.stock
               }
-              className="mt-8 flex w-full items-center justify-between rounded-full border border-[#D8D4C8] bg-[#EEECE4] px-7 py-4 text-[#252525] transition-all duration-300 hover:bg-[#E5E1D6] disabled:cursor-not-allowed disabled:opacity-50"
+              className="theme-border theme-text theme-soft theme-soft-hover mt-8 flex w-full items-center justify-between rounded-full border px-7 py-4 transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <span className="text-sm font-medium tracking-wide">
                 {product.stock === 0
@@ -168,13 +168,13 @@ function ProductDetails() {
                     : 'Add to cart'}
               </span>
 
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#252525] text-lg text-white">
+              <span className="theme-text theme-border flex h-9 w-9 items-center justify-center rounded-full border text-lg">
                 +
               </span>
             </button>
 
             {message && (
-              <p className="mt-3 text-sm text-[#898674]" role="status">
+              <p className="theme-muted mt-3 text-sm" role="status">
                 {message}
               </p>
             )}

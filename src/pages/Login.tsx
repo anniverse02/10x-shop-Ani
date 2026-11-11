@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -52,29 +53,29 @@ function Login() {
   }
 
   return (
-    <section className="min-h-screen bg-[#F7F5F0]">
+    <section className="theme-page min-h-screen">
       <div className="mx-auto grid max-w-7xl gap-16 px-6 py-20 md:grid-cols-2 md:gap-24 md:py-28">
         <div className="flex flex-col justify-center">
-          <p className="text-xs uppercase tracking-[0.2em] text-[#898674]">
+          <p className="theme-muted text-xs uppercase tracking-[0.2em]">
             10X Shop / Account
           </p>
 
-          <h1 className="mt-8 max-w-md text-5xl font-medium leading-tight tracking-tight text-[#252525]">
+          <h1 className="theme-text mt-8 max-w-md text-5xl font-medium leading-tight tracking-tight">
             Good to have you back.
           </h1>
 
-          <p className="mt-6 max-w-sm text-sm leading-7 text-[#898674]">
+          <p className="theme-muted mt-6 max-w-sm text-sm leading-7">
             Sign in to your account and continue exploring our collection.
           </p>
         </div>
 
         <div className="flex flex-col justify-center">
-          <div className="border-b border-[#D8D4C8] pb-5">
-            <h2 className="text-xl font-medium text-[#252525]">
+          <div className="theme-border border-b pb-5">
+            <h2 className="theme-text text-xl font-medium">
               Sign in
             </h2>
 
-            <p className="mt-2 text-sm text-[#898674]">
+            <p className="theme-muted mt-2 text-sm">
               Enter your account details below.
             </p>
           </div>
@@ -83,7 +84,7 @@ function Login() {
             <div>
               <label
                 htmlFor="username"
-                className="mb-3 block text-sm text-[#252525]"
+                className="theme-text mb-3 block text-sm"
               >
                 Username
               </label>
@@ -95,7 +96,7 @@ function Login() {
                 onChange={(event) => setUsername(event.target.value)}
                 placeholder="Enter your username"
                 autoComplete="username"
-                className="w-full border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525]"
+                className="theme-input w-full border-b bg-transparent px-1 py-3 text-sm outline-none transition focus:border-[#898674]"
               />
 
               {usernameError && (
@@ -108,7 +109,7 @@ function Login() {
             <div>
               <label
                 htmlFor="password"
-                className="mb-3 block text-sm text-[#252525]"
+                className="theme-text mb-3 block text-sm"
               >
                 Password
               </label>
@@ -120,7 +121,7 @@ function Login() {
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder="Enter your password"
                 autoComplete="current-password"
-                className="w-full border-b border-[#CFCABC] bg-transparent px-1 py-3 text-sm text-[#252525] outline-none transition focus:border-[#252525]"
+                className="theme-input w-full border-b bg-transparent px-1 py-3 text-sm outline-none transition focus:border-[#898674]"
               />
 
               {passwordError && (
@@ -132,11 +133,11 @@ function Login() {
 
             <button
               type="submit"
-              className="flex w-full items-center justify-between rounded-full border border-[#D8D4C8] bg-[#EEECE4] px-7 py-3 text-sm font-medium text-[#252525] transition hover:bg-[#E5E1D6] focus:outline-none focus:ring-2 focus:ring-[#898674]"
+              className="theme-text theme-border theme-soft theme-soft-hover flex w-full items-center justify-between rounded-full border px-7 py-3 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-[#898674]"
             >
               <span>Sign in</span>
 
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#252525] text-lg text-white">
+              <span className="theme-text theme-border flex h-9 w-9 items-center justify-center rounded-full border text-lg">
                 →
               </span>
             </button>
@@ -144,7 +145,7 @@ function Login() {
 
           <Link
             to="/"
-            className="mt-6 inline-block text-sm text-[#898674] transition hover:text-[#252525]"
+            className="theme-muted mt-6 inline-block text-sm transition hover:underline"
           >
             ← Back to catalog
           </Link>
