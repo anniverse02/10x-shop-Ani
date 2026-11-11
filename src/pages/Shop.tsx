@@ -1,8 +1,10 @@
+
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { getProducts } from '../services/productService'
 import { useCart } from '../context/CartContext'
+import { flyToCart } from '../utils/flyToCart'
 import type { Product } from '../types/product'
 
 function Shop() {
@@ -38,6 +40,17 @@ function Shop() {
       : products.filter(
           (product) => product.category === selectedCategory,
         )
+
+  const handleAddToCart = (
+    product: Product,
+    image: HTMLImageElement | null,
+  ): void => {
+    if (image && product.stock > 0) {
+      flyToCart(image)
+    }
+
+    addToCart(product)
+  }
 
   if (loading) {
     return (
@@ -109,7 +122,7 @@ function Shop() {
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {filteredProducts.map((product) => (
               <div key={product.id} className="group">
-                <Link to={`/products/${product.id}`}>
+                <Link to={`/products/${product.id}`} className="block">
                   <div className="flex aspect-[4/5] items-center justify-center overflow-hidden bg-white p-6">
                     <img
                       src={product.thumbnail}
@@ -141,7 +154,12 @@ function Shop() {
 
                 <button
                   type="button"
-                  onClick={() => addToCart(product)}
+                  onClick={(event) => {
+                    const image =
+                      event.currentTarget.parentElement?.querySelector('img')
+
+                    handleAddToCart(product, image || null)
+                  }}
                   disabled={product.stock === 0}
                   className="mt-4 flex w-full items-center justify-between rounded-full border border-[#D8D4C8] bg-[#EEECE4] px-5 py-2.5 text-xs font-medium text-[#252525] transition hover:bg-[#E5E1D6] disabled:cursor-not-allowed disabled:opacity-50"
                 >

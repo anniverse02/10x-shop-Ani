@@ -77,6 +77,7 @@ function Header() {
             )}
 
             <Link
+              id="cart-link"
               to="/cart"
               className="flex min-h-11 items-center gap-2 border border-[#252525] px-4 text-xs font-medium uppercase tracking-wider transition hover:bg-[#252525] hover:text-white"
             >
@@ -98,3 +99,4 @@ function Header() {
 }
 
 export default Header
+

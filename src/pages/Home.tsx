@@ -1,14 +1,9 @@
 
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-
-type Product = {
-  id: number
-  title: string
-  price: number
-  thumbnail: string
-  category: string
-}
+import { useCart } from '../context/CartContext'
+import { flyToCart } from '../utils/flyToCart'
+import type { Product } from '../types/product'
 
 const categories = [
   { name: 'Beauty', number: '01' },
@@ -21,6 +16,8 @@ function Home() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+
+  const { addToCart } = useCart()
 
   useEffect(() => {
     fetch('https://dummyjson.com/products?limit=8')
@@ -42,6 +39,17 @@ function Home() {
   }, [])
 
   const featuredProduct = products[0]
+
+  const handleAddToCart = (
+    product: Product,
+    image: HTMLImageElement | null,
+  ): void => {
+    if (image && product.stock > 0) {
+      flyToCart(image)
+    }
+
+    addToCart(product)
+  }
 
   return (
     <div className="min-h-screen bg-[#F7F5F0] text-[#252525]">
@@ -187,34 +195,55 @@ function Home() {
         {!loading && !error && (
           <div className="grid grid-cols-2 gap-5 md:grid-cols-4 md:gap-7">
             {products.slice(0, 4).map((product) => (
-              <Link
-                to={`/products/${product.id}`}
-                key={product.id}
-                className="group"
-              >
-                <div className="flex aspect-[4/5] items-center justify-center overflow-hidden bg-[#ECE9E1]">
-                  <img
-                    src={product.thumbnail}
-                    alt={product.title}
-                    className="h-full w-full object-contain p-5 transition duration-500 group-hover:scale-105"
-                  />
-                </div>
-
-                <div className="flex items-start justify-between gap-2 pt-4">
-                  <div>
-                    <h3 className="text-sm font-medium">
-                      {product.title}
-                    </h3>
-                    <p className="mt-1 text-xs capitalize text-[#99958B]">
-                      {product.category}
-                    </p>
+              <div key={product.id} className="group">
+                <Link
+                  to={`/products/${product.id}`}
+                  className="block"
+                >
+                  <div className="flex aspect-[4/5] items-center justify-center overflow-hidden bg-[#ECE9E1]">
+                    <img
+                      src={product.thumbnail}
+                      alt={product.title}
+                      className="h-full w-full object-contain p-5 transition duration-500 group-hover:scale-105"
+                    />
                   </div>
 
-                  <span className="shrink-0 text-sm font-medium">
-                    ${product.price}
+                  <div className="flex items-start justify-between gap-2 pt-4">
+                    <div>
+                      <h3 className="text-sm font-medium">
+                        {product.title}
+                      </h3>
+                      <p className="mt-1 text-xs capitalize text-[#99958B]">
+                        {product.category}
+                      </p>
+                    </div>
+
+                    <span className="shrink-0 text-sm font-medium">
+                      ${product.price}
+                    </span>
+                  </div>
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    const image =
+                      event.currentTarget.parentElement?.querySelector('img')
+
+                    handleAddToCart(product, image || null)
+                  }}
+                  disabled={product.stock === 0}
+                  className="mt-4 flex w-full items-center justify-between rounded-full border border-[#D8D4C8] bg-[#EEECE4] px-5 py-2.5 text-xs font-medium text-[#252525] transition hover:bg-[#E5E1D6] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <span>
+                    {product.stock === 0 ? 'Out of stock' : 'Add to cart'}
                   </span>
-                </div>
-              </Link>
+
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#252525] text-base text-white">
+                    +
+                  </span>
+                </button>
+              </div>
             ))}
           </div>
         )}

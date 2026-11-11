@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 
 import { useCart } from '../context/CartContext'
 import { getProductById } from '../services/productService'
+import { flyToCart } from '../utils/flyToCart'
 import type { Product } from '../types/product'
 import NotFound from '../components/NotFound'
 
@@ -58,6 +59,14 @@ function ProductDetails() {
       return
     }
 
+    const image = document.getElementById(
+      'product-image',
+    ) as HTMLImageElement | null
+
+    if (image) {
+      flyToCart(image)
+    }
+
     addToCart(product)
     setMessage('Added to cart.')
   }
@@ -106,6 +115,7 @@ function ProductDetails() {
         <div className="grid gap-12 md:grid-cols-2">
           <div className="flex items-center justify-center bg-white p-10">
             <img
+              id="product-image"
               src={product.thumbnail}
               alt={product.title}
               className="max-h-[500px] w-full object-contain"
