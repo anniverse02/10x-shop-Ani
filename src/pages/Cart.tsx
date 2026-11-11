@@ -12,21 +12,21 @@ function Cart() {
   )
 
   return (
-    <div className="min-h-screen w-full bg-[#F7F5F0]">
+    <div className="theme-page min-h-screen w-full">
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <h1 className="text-3xl font-semibold tracking-tight text-[#252525]">
+        <h1 className="theme-text text-3xl font-semibold tracking-tight">
           Shopping Cart
         </h1>
 
         {items.length === 0 ? (
           <div className="mt-8">
-            <p className="text-sm text-[#898674]">
+            <p className="theme-muted text-sm">
               Your cart is currently empty.
             </p>
 
             <Link
               to="/"
-              className="mt-6 inline-block text-sm text-[#252525] underline"
+              className="theme-text mt-6 inline-block text-sm underline"
             >
               Continue shopping
             </Link>
@@ -36,24 +36,24 @@ function Cart() {
             {items.map((item) => (
               <div
                 key={item.product.id}
-                className="flex flex-wrap items-center gap-6 border-b border-[#D8D4C8] pb-6"
+                className="theme-border flex flex-wrap items-center gap-6 border-b pb-6"
               >
                 <img
                   src={item.product.thumbnail}
                   alt={item.product.title}
-                  className="h-24 w-24 bg-white object-contain p-2"
+                  className="theme-surface h-24 w-24 object-contain p-2"
                 />
 
                 <div className="min-w-0 flex-1">
-                  <h2 className="text-sm font-medium text-[#252525]">
+                  <h2 className="theme-text text-sm font-medium">
                     {item.product.title}
                   </h2>
 
-                  <p className="mt-2 text-sm text-[#898674]">
+                  <p className="theme-muted mt-2 text-sm">
                     Price: ${item.product.price.toFixed(2)}
                   </p>
 
-                  <p className="mt-1 text-sm font-medium text-[#252525]">
+                  <p className="theme-text mt-1 text-sm font-medium">
                     Subtotal: $
                     {(item.product.price * item.quantity).toFixed(2)}
                   </p>
@@ -69,13 +69,13 @@ function Cart() {
                       }
                       disabled={item.quantity <= 1}
                       aria-label={`Decrease quantity of ${item.product.title}`}
-                      className="flex h-11 w-11 items-center justify-center rounded-full border border-[#D8D4C8] text-[#252525] transition hover:bg-[#EAE7DE] disabled:cursor-not-allowed disabled:opacity-40"
+                      className="theme-text theme-border theme-soft-hover flex h-11 w-11 items-center justify-center rounded-full border transition disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       -
                     </button>
 
                     <span
-                      className="text-sm text-[#252525]"
+                      className="theme-text text-sm"
                       aria-live="polite"
                     >
                       {item.quantity}
@@ -93,7 +93,7 @@ function Cart() {
                         item.quantity >= item.product.stock
                       }
                       aria-label={`Increase quantity of ${item.product.title}`}
-                      className="flex h-11 w-11 items-center justify-center rounded-full border border-[#D8D4C8] text-[#252525] transition hover:bg-[#EAE7DE] disabled:cursor-not-allowed disabled:opacity-40"
+                      className="theme-text theme-border theme-soft-hover flex h-11 w-11 items-center justify-center rounded-full border transition disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       +
                     </button>
@@ -112,13 +112,13 @@ function Cart() {
               </div>
             ))}
 
-            <div className="flex justify-end border-t border-[#D8D4C8] pt-6">
+            <div className="theme-border flex justify-end border-t pt-6">
               <div className="text-right">
-                <p className="text-xs uppercase tracking-widest text-[#898674]">
+                <p className="theme-muted text-xs uppercase tracking-widest">
                   Total
                 </p>
 
-                <p className="mt-2 text-2xl font-semibold text-[#252525]">
+                <p className="theme-text mt-2 text-2xl font-semibold">
                   ${totalPrice.toFixed(2)}
                 </p>
               </div>
@@ -127,7 +127,7 @@ function Cart() {
             <div className="flex justify-end">
               <Link
                 to="/checkout"
-                className="flex items-center gap-8 rounded-full border border-[#CFCABC] px-7 py-4 text-sm text-[#252525] transition hover:bg-[#EEECE4]"
+                className="theme-text theme-border theme-soft theme-soft-hover flex items-center gap-8 rounded-full border px-7 py-4 text-sm transition"
               >
                 <span>Continue to checkout</span>
                 <span className="text-lg">→</span>
@@ -141,4 +141,3 @@ function Cart() {
 }
 
 export default Cart
-

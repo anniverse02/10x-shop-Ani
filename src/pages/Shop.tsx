@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 
 import { getProducts } from '../services/productService'
 import { useCart } from '../context/CartContext'
@@ -12,6 +12,9 @@ function Shop() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+
+  const [searchParams] = useSearchParams()
+  const searchQuery = searchParams.get('search') ?? ''
 
   const { addToCart } = useCart()
 
@@ -34,12 +37,17 @@ function Shop() {
     new Set(products.map((product) => product.category)),
   )
 
-  const filteredProducts =
-    selectedCategory === 'all'
-      ? products
-      : products.filter(
-          (product) => product.category === selectedCategory,
-        )
+  const filteredProducts = products.filter((product) => {
+    const matchesCategory =
+      selectedCategory === 'all' ||
+      product.category === selectedCategory
+
+    const matchesSearch = product.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase().trim())
+
+    return matchesCategory && matchesSearch
+  })
 
   const handleAddToCart = (
     product: Product,
@@ -54,7 +62,7 @@ function Shop() {
 
   if (loading) {
     return (
-      <div className="bg-[#F7F5F0] py-24 text-center text-[#898674]">
+      <div className="theme-page theme-muted py-24 text-center">
         Loading products...
       </div>
     )
@@ -62,25 +70,25 @@ function Shop() {
 
   if (error) {
     return (
-      <div className="bg-[#F7F5F0] py-24 text-center text-red-600">
+      <div className="theme-page py-24 text-center text-red-600">
         {error}
       </div>
     )
   }
 
   return (
-    <section className="min-h-screen bg-[#F7F5F0]">
+    <section className="theme-page min-h-screen">
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="mb-12">
-          <p className="text-xs uppercase tracking-[0.2em] text-[#898674]">
+          <p className="theme-muted text-xs uppercase tracking-[0.2em]">
             Explore our selection
           </p>
 
-          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-[#252525]">
+          <h1 className="theme-text mt-3 text-4xl font-semibold tracking-tight">
             The Collection
           </h1>
 
-          <p className="mt-4 max-w-lg text-sm leading-6 text-[#898674]">
+          <p className="theme-muted mt-4 max-w-lg text-sm leading-6">
             Discover products selected for everyday living.
           </p>
         </div>
@@ -89,10 +97,10 @@ function Shop() {
           <button
             type="button"
             onClick={() => setSelectedCategory('all')}
-            className={`border px-4 py-2 text-xs uppercase tracking-wider transition ${
+            className={`theme-border border px-4 py-2 text-xs uppercase tracking-wider transition ${
               selectedCategory === 'all'
-                ? 'border-[#252525] bg-[#252525] text-white'
-                : 'border-[#D8D4CA] text-[#898674] hover:border-[#252525]'
+                ? 'theme-text theme-soft'
+                : 'theme-muted hover:theme-text'
             }`}
           >
             All products
@@ -103,10 +111,10 @@ function Shop() {
               key={category}
               type="button"
               onClick={() => setSelectedCategory(category)}
-              className={`border px-4 py-2 text-xs uppercase tracking-wider transition ${
+              className={`theme-border border px-4 py-2 text-xs uppercase tracking-wider transition ${
                 selectedCategory === category
-                  ? 'border-[#252525] bg-[#252525] text-white'
-                  : 'border-[#D8D4CA] text-[#898674] hover:border-[#252525]'
+                  ? 'theme-text theme-soft'
+                  : 'theme-muted hover:theme-text'
               }`}
             >
               {category.replace('-', ' ')}
@@ -115,7 +123,7 @@ function Shop() {
         </div>
 
         {filteredProducts.length === 0 ? (
-          <p className="py-16 text-center text-sm text-[#898674]">
+          <p className="theme-muted py-16 text-center text-sm">
             No products found.
           </p>
         ) : (
@@ -123,7 +131,7 @@ function Shop() {
             {filteredProducts.map((product) => (
               <div key={product.id} className="group">
                 <Link to={`/products/${product.id}`} className="block">
-                  <div className="flex aspect-[4/5] items-center justify-center overflow-hidden bg-white p-6">
+                  <div className="theme-surface flex aspect-[4/5] items-center justify-center overflow-hidden p-6">
                     <img
                       src={product.thumbnail}
                       alt={product.title}
@@ -132,20 +140,20 @@ function Shop() {
                   </div>
 
                   <div className="mt-4">
-                    <p className="text-[10px] uppercase tracking-wider text-[#898674]">
+                    <p className="theme-muted text-[10px] uppercase tracking-wider">
                       {product.category}
                     </p>
 
-                    <h2 className="mt-2 text-sm font-medium text-[#252525]">
+                    <h2 className="theme-text mt-2 text-sm font-medium">
                       {product.title}
                     </h2>
 
                     <div className="mt-2 flex items-center justify-between">
-                      <p className="text-sm font-semibold text-[#252525]">
+                      <p className="theme-text text-sm font-semibold">
                         ${product.price.toFixed(2)}
                       </p>
 
-                      <p className="text-xs text-[#898674]">
+                      <p className="theme-muted text-xs">
                         ★ {product.rating}
                       </p>
                     </div>
@@ -161,13 +169,13 @@ function Shop() {
                     handleAddToCart(product, image || null)
                   }}
                   disabled={product.stock === 0}
-                  className="mt-4 flex w-full items-center justify-between rounded-full border border-[#D8D4C8] bg-[#EEECE4] px-5 py-2.5 text-xs font-medium text-[#252525] transition hover:bg-[#E5E1D6] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="theme-border theme-text theme-soft theme-soft-hover mt-4 flex w-full items-center justify-between rounded-full border px-5 py-2.5 text-xs font-medium transition disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <span>
                     {product.stock === 0 ? 'Out of stock' : 'Add to cart'}
                   </span>
 
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#252525] text-base text-white">
+                  <span className="theme-text theme-border flex h-7 w-7 items-center justify-center rounded-full border text-base">
                     +
                   </span>
                 </button>

@@ -1,7 +1,30 @@
+
 @import "tailwindcss";
 
 * {
   box-sizing: border-box;
+}
+
+:root {
+  --page-bg: #F7F5F0;
+  --surface-bg: #FFFFFF;
+  --main-text: #252525;
+  --muted-text: #898674;
+  --main-border: #E5E1D8;
+  --soft-bg: #EEECE4;
+  --soft-hover: #E5E1D6;
+  --input-border: #D8D4C8;
+}
+
+.dark {
+  --page-bg: #252623;
+  --surface-bg: #30312D;
+  --main-text: #F1EFE8;
+  --muted-text: #B4B09F;
+  --main-border: #45463F;
+  --soft-bg: #393A35;
+  --soft-hover: #45463F;
+  --input-border: #55564E;
 }
 
 body {
@@ -9,4 +32,42 @@ body {
   min-width: 320px;
   min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--page-bg);
+  color: var(--main-text);
+}
+
+/* Theme colors */
+
+.theme-page {
+  background-color: var(--page-bg);
+}
+
+.theme-surface {
+  background-color: var(--surface-bg);
+}
+
+.theme-text {
+  color: var(--main-text);
+}
+
+.theme-muted {
+  color: var(--muted-text);
+}
+
+.theme-border {
+  border-color: var(--main-border);
+}
+
+.theme-soft {
+  background-color: var(--soft-bg);
+}
+
+.theme-soft-hover:hover {
+  background-color: var(--soft-hover);
+}
+
+.theme-input {
+  background-color: var(--surface-bg);
+  color: var(--main-text);
+  border-color: var(--input-border);
 }
